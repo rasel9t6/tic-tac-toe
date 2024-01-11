@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import Square from './Square';
 
-const Board = () => {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
+const Board = ({ xIsNext, squares, onPlay }) => {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = `Winner ${winner}`;
+    status = `Winner: ${winner}`;
   } else {
-    status = `Next Player ${xIsNext ? 'X' : 'O'}`;
+    status = `Next Player: ${xIsNext ? 'X' : 'O'}`;
   }
   function handleClick(index) {
     if (squares[index] || calculateWinner(squares)) {
@@ -21,11 +18,10 @@ const Board = () => {
     } else {
       nextSquare[index] = 'O';
     }
-    setSquares(nextSquare);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquare);
   }
   return (
-    <>
+    <div className='border p-3'>
       <h2 className=' font-bold'>{status}</h2>
       <div className='flex'>
         <Square
@@ -69,7 +65,7 @@ const Board = () => {
           onSquareClick={() => handleClick(8)}
         />
       </div>
-    </>
+    </div>
   );
 };
 export default Board;
